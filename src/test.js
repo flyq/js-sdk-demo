@@ -21,10 +21,9 @@ const transfer = async (to, value) => {
     validUntilBlock: +current + 88
   }
 
-  console.log(chalk.green.bold(`Transaction to ${to} with value ${value}`))
+
   const result = await cita.base.sendTransaction(tx)
-  console.log(chalk.green.bold('Received Result:'))
-  console.log(chalk.blue(JSON.stringify(result, null, 2)))
+  console.log(JSON.stringify(result, null, 2))
   setTimeout(() => {
     checkBalance(to)
   }, 6000)
@@ -32,9 +31,10 @@ const transfer = async (to, value) => {
 
 const checkBalance = async to => {
   const balance = await cita.base.getBalance(to, 'pending')
-  console.log(chalk.green.bold(`Now ${to} has balance of ${balance}`))
+    console.log(to)
+    console.log(balance)
 }
 
 const to = '0x46a23e25df9a0f6c18729dda9ad1af3b6a131161'
 
-transfer(to, '0x10000000000000000')
+transfer(to, '1000000000000')
