@@ -1,48 +1,40 @@
-const cita = require("../cita");
-const { abi, bytecode } = require("./compiled.js");
-const config = require("../config");
+const cita = require("./cita");
 
-const account = cita.base.accounts.privateKeyToAccount(config.privateKey); // create account by private key from config
-
-cita.base.accounts.wallet.add(account); // add account to cita
-
-let transaction = require("./transaction");
-
-transaction = {
-  ...transaction,
-  from: cita.base.accounts.wallet[0].address
+const transaction = {
+  nonce: 999999,
+  quota: 1000000,
+  chainId: "0x1",
+  version: 2,
+  validUntilBlock: 999999,
+  value: "0x0"
 };
+transaction.from = cita.base.accounts.wallet[0].address
+transaction.privateKey = cita.base.accounts.wallet[0].privateKey;
 
+const transfer = async (to, value) => {
+  checkBalance(to)
+  const current = await cita.base.getBlockNumber()
+  const tx = {
+    ...transaction,
+    to,
+    value,
+    validUntilBlock: +current + 88
+  }
 
-cita.base
-  .getBlockNumber()
-  .then(current => {
-    transaction.validUntilBlock = +current + 88; // update transaction.validUntilBlock
-    // deploy contract
-    return myContract
-      .deploy({
-        data: bytecode,
-        arguments: []
-      })
-      .send(transaction);
-  })
-  .then(txRes => {
-    if (txRes.hash) {
-      // get transaction receipt
-      return cita.listeners.listenToTransactionReceipt(txRes.hash);
-    } else {
-      throw new Error("No Transaction Hash Received");
-    }
-  })
-  .then(res => {
-    const { contractAddress, errorMessage } = res;
-    if (errorMessage) throw new Error(errorMessage);
-    console.log(`contractAddress is: ${contractAddress}`);
-    _contractAddress = contractAddress;
-    return cita.base.storeAbi(contractAddress, abi, transaction); // store abi on the chain
-  })
-  .then(res => {
-    if (res.errorMessage) throw new Error(res.errorMessage);
-    return cita.base.getAbi(_contractAddress, "pending").then(console.log); // get abi from the chain
-  })
-  .catch(err => console.error(err));
+  console.log(chalk.green.bold(`Transaction to ${to} with value ${value}`))
+  const result = await cita.base.sendTransaction(tx)
+  console.log(chalk.green.bold('Received Result:'))
+  console.log(chalk.blue(JSON.stringify(result, null, 2)))
+  setTimeout(() => {
+    checkBalance(to)
+  }, 6000)
+}
+
+const checkBalance = async to => {
+  const balance = await cita.base.getBalance(to, 'pending')
+  console.log(chalk.green.bold(`Now ${to} has balance of ${balance}`))
+}
+
+const to = '0x46a23e25df9a0f6c18729dda9ad1af3b6a131161'
+
+transfer(to, '0x10000000000000000')

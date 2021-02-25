@@ -5,20 +5,17 @@
   "homepage": "",
   "dependencies": {
     "@cryptape/cita-sdk": "^1.0.1",
-    "dotenv": "^8.2.0",
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
     "react-router-dom": "^4.3.1",
-    "react-scripts": "3.4.0",
-    "web3": "^1.2.6"
+    "react-scripts": "3.4.0"
   },
   "engines": {
     "node": ">= 10.0.0",
     "yarn": ">= 1.14"
   },
   "scripts": {
-    "test": "node ./src/test.js",
-
+    "test": "node ./src/test.js"
   },
   "browserslist": [
     ">0.2%",
