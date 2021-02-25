@@ -1,0 +1,33 @@
+{
+  "name": "js-sdk-demo",
+  "version": "0.0.1",
+  "private": true,
+  "homepage": "",
+  "dependencies": {
+    "@cryptape/cita-sdk": "^1.0.1",
+    "dotenv": "^8.2.0",
+    "react": "^16.4.1",
+    "react-dom": "^16.4.1",
+    "react-router-dom": "^4.3.1",
+    "react-scripts": "3.4.0",
+    "web3": "^1.2.6"
+  },
+  "engines": {
+    "node": ">= 10.0.0",
+    "yarn": ">= 1.14"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom --runInBand",
+    "eject": "react-scripts eject",
+    "deploy": "node ./src/contracts/deploy.js",
+    "test:contract": "jest ./src/contracts/contracts.test.js"
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
+}
